@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Call Widget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif;
+            background: #131722;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .sponsor-widget-container {
+            width: 100%;
+            height: 56px;
+            background: #131722;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid #2a2e39;
+            border-bottom: 1px solid #2a2e39;
+        }
+
+        .sponsor-ticker-tape {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            animation: scroll-left 30s linear infinite;
+            white-space: nowrap;
+        }
+
+        .sponsor-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 16px;
+            height: 100%;
+            border-right: 1px solid #2a2e39;
+            min-width: 280px;
+            position: relative;
+        }
+
+        .sponsor-logo {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, #2962ff, #1976d2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sponsor-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .sponsor-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #d1d4dc;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .sponsor-subtitle {
+            font-size: 11px;
+            color: #787b86;
+            line-height: 1.2;
+        }
+
+        .call-to-action .sponsor-title {
+            color: #4caf50;
+            animation: pulse-text 2s ease-in-out infinite;
+        }
+
+        .urgent .sponsor-title {
+            color: #ff9800;
+        }
+
+        .contact .sponsor-subtitle {
+            color: #2196f3;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes pulse-text {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Hover effect for interactivity */
+        .sponsor-item:hover {
+            background: rgba(41, 98, 255, 0.1);
+        }
+
+        /* Copyright-style attribution */
+        .sponsor-attribution {
+            position: absolute;
+            bottom: 2px;
+            right: 8px;
+            font-size: 9px;
+            color: #787b86;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="sponsor-widget-container">
+        <div class="sponsor-ticker-tape">
+            <div class="sponsor-item call-to-action">
+                <div class="sponsor-logo">🚀</div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">SEEKING SPONSORS</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item">
+                <div class="sponsor-logo">💼</div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">YOUR LOGO HERE</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item urgent">
+                <div class="sponsor-logo">📈</div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">SPONSOR OPPORTUNITY</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item contact">
+                <div class="sponsor-logo">📧</div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">GET IN TOUCH</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item call-to-action">
+                <div class="sponsor-logo">⭐</div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">BECOME A SPONSOR</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item">
+                <div class="sponsor-logo">🎯</div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">TARGET AUDIENCE</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item">
+                <div class="sponsor-logo">🤝</div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">PARTNERSHIP READY</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item contact">
+                <div class="sponsor-logo">💬</div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">CHAT WITH US</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
