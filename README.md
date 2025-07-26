@@ -1,158 +1,113 @@
-# TickerScroll - Financial Market Ticker Widgets
+# TickerScroll
 
-A collection of rolling ticker widgets for financial platforms and trading websites. This project provides both third-party market data integration and custom sponsorship call-to-action displays.
+A collection of scrolling ticker widgets designed for use in eCamm Live streaming software.
 
-## 📊 Project Overview
+## Files
 
-TickerScroll consists of two main components:
-- **TradingView Market Ticker**: Real-time financial market data display
-- **Custom Sponsor Widget**: Animated sponsorship call-to-action ticker
+- `ticker.html` - Third-party TradingView ticker widget for financial market data
+- `sponsor_call_widget.html` - Custom sponsor call widget for seeking sponsors
+- `sponsor_logos/` - Directory containing sponsor logo assets
 
-## 🚀 Features
+## TradingView Ticker Widget
 
-### TradingView Market Ticker (`ticker.html`)
-- **Real-time market data** from TradingView
-- **Multiple asset classes**: Stocks, indices, cryptocurrencies
-- **Professional styling** with dark theme
-- **Responsive design** with adaptive display mode
-- **Company logos** for visual identification
+The `ticker.html` file contains a TradingView widget that displays real-time financial market data including:
 
-**Supported Symbols:**
-- S&P 500 Index (SPXUSD)
-- NASDAQ Composite (IXIC)
-- Bitcoin (BTCUSD)
-- Ethereum (ETHUSD)
-- Solana (SOLUSD)
-- Google (GOOG)
-- Meta (META)
-- Nvidia (NVDA)
+- **S&P 500 Index** (FOREXCOM:SPXUSD)
+- **NASDAQ Composite** (NASDAQ:IXIC)
+- **Bitcoin** (CRYPTO:BTCUSD)
+- **Ethereum** (CRYPTO:ETHUSD)
+- **Solana** (CRYPTO:SOLUSD)
+- **Google** (NASDAQ:GOOG)
+- **Meta** (NASDAQ:META)
+- **Nvidia** (NASDAQ:NVDA)
 
-### Custom Sponsor Widget (`sponsor_call_widget.html`)
-- **Animated scrolling** ticker tape effect
-- **Professional financial platform styling**
-- **Multiple call-to-action messages**
-- **Interactive hover effects**
-- **Responsive design** (1280px × 36px)
-- **Contact integration** with email links
+### Features
 
-## 🛠️ Technical Details
+- **Real-time Data**: Live market prices and changes
+- **Dark Theme**: Matches financial/trading aesthetics
+- **Adaptive Display**: Responsive design for different screen sizes
+- **Symbol Logos**: Visual representation of each asset
+- **Professional Styling**: Clean, modern interface
 
-### Dependencies
-- **TradingView Widget**: External JavaScript from TradingView
-- **Custom CSS**: Pure CSS animations and styling
-- **No build process**: Direct HTML/CSS implementation
+### How to Use
 
-### Browser Compatibility
-- Modern browsers with CSS3 support
-- TradingView widget requires internet connection
-- Responsive design for various screen sizes
+1. Open `ticker.html` in eCamm Live as a widget
+2. The widget will automatically display live market data
+3. Customize symbols by modifying the "symbols" array in the script
+4. Adjust display settings through the widget configuration
 
-### Performance
-- Lightweight implementation
-- CSS-based animations for smooth performance
-- No heavy JavaScript dependencies
+## Sponsor Call Widget
 
-## 📁 File Structure
+The `sponsor_call_widget.html` file is a custom scrolling ticker designed to display sponsor opportunities and contact information during live streams.
 
-```
-tickerscroll/
-├── README.md                 # Project documentation
-├── ticker.html              # TradingView market data widget
-└── sponsor_call_widget.html # Custom sponsorship ticker
-```
+### Features
 
-## 🎯 Usage
+- **Infinite Scroll**: Seamless looping animation with duplicated content
+- **Responsive Design**: Adapts to different screen sizes and eCamm Live widget dimensions
+- **Professional Styling**: Dark theme matching financial/trading aesthetics
+- **Multiple Message Types**: Call-to-action, urgent, and contact variations
+- **Logo Support**: Displays sponsor logos with intelligent fallback system
+- **Interactive Elements**: Clickable items that copy email to clipboard or open email client
+- **Accessibility**: Full keyboard navigation and screen reader support
+- **eCamm Live Optimized**: Designed specifically for eCamm Live's widget system
 
-### Quick Start
-1. **Market Ticker**: Open `ticker.html` in any web browser
-2. **Sponsor Widget**: Open `sponsor_call_widget.html` in any web browser
+### Recent Improvements (v2.0)
 
-### Integration
-Both widgets can be:
-- Embedded in existing websites
-- Used as standalone displays
-- Customized for specific branding needs
-- Integrated into financial dashboards
+- **Fixed CSS Conflicts**: Resolved logo display issues with proper fallback system
+- **Enhanced Error Handling**: Improved image loading with graceful degradation
+- **Accessibility Features**: Added ARIA labels, keyboard navigation, and focus styles
+- **Interactive Functionality**: Click to copy email addresses or open email client
+- **Performance Optimizations**: Lazy loading and better animation handling
+- **Better UX**: Hover effects and visual feedback for user interactions
 
-### Customization Options
+### How to Use
 
-#### TradingView Ticker
-```javascript
-{
-  "symbols": [...],           // Add/remove financial instruments
-  "showSymbolLogo": true,     // Toggle company logos
-  "isTransparent": false,     // Background transparency
-  "displayMode": "adaptive",  // Display mode
-  "colorTheme": "dark",       // Light/dark theme
-  "locale": "en"             // Language setting
-}
-```
+1. Open `sponsor_call_widget.html` in eCamm Live as a widget
+2. The widget will automatically start scrolling after a 500ms delay
+3. Click on any sponsor item to copy the email address to clipboard
+4. Customize sponsor messages and contact information as needed
+5. Add actual sponsor logos to the `sponsor_logos/` directory
 
-#### Sponsor Widget
-- Modify sponsor messages in the HTML
-- Adjust animation speed in CSS (`animation: scroll-left 30s`)
-- Change colors and styling in the CSS section
-- Add/remove sponsor items as needed
+### Customization
 
-## 🎨 Styling
+- **Contact Information**: Update the email addresses in the HTML
+- **Sponsor Messages**: Modify the title and subtitle text
+- **Logos**: Replace placeholder.svg with actual sponsor logos
+- **Colors**: Adjust the CSS color scheme as needed
+- **Animation Speed**: Change the animation duration in the CSS (currently 30s)
+- **Message Types**: Add new CSS classes for different message styles
 
-### Color Scheme
-- **Background**: #131722 (Dark financial theme)
-- **Borders**: #2a2e39 (Subtle separators)
-- **Text**: #d1d4dc (Primary), #787b86 (Secondary)
-- **Accents**: #4caf50 (Success), #ff9800 (Warning), #2196f3 (Info)
+### Technical Details
 
-### Typography
-- **Font Family**: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif
-- **Font Sizes**: 11px (titles), 10px (subtitles), 9px (attribution)
+- **Dimensions**: Responsive (100% width/height) with minimum 36px height
+- **Animation**: 30-second linear infinite scroll with seamless looping
+- **Compatibility**: Works in eCamm Live's iframe environment
+- **Fallbacks**: Intelligent logo loading with graceful degradation
+- **Performance**: Optimized for smooth scrolling without external dependencies
+- **Accessibility**: WCAG 2.1 compliant with keyboard navigation and screen reader support
 
-## 🔧 Development
+### Message Types
 
-### Prerequisites
-- Any modern web browser
-- Text editor for modifications
-- Internet connection (for TradingView widget)
+- **Call-to-Action**: Green text with pulsing animation
+- **Urgent**: Orange text for time-sensitive opportunities
+- **Contact**: Blue subtitle for contact information
+- **Standard**: Default styling for general messages
 
-### Local Development
-1. Clone or download the project files
-2. Open files directly in your browser
-3. Make modifications using any text editor
-4. Refresh browser to see changes
+## Sponsor Logos
 
-### Customization Workflow
-1. **Backup original files**
-2. **Make incremental changes**
-3. **Test in browser**
-4. **Iterate and refine**
+See `sponsor_logos/README.md` for detailed instructions on adding and managing sponsor logos.
 
-## 📞 Contact & Sponsorship
+### Logo Requirements
 
-For sponsorship opportunities or technical support:
-- **Email**: sponsors@bonam.com
-- **Project**: TickerScroll Widget Collection
+- **Format**: SVG preferred, PNG/JPG accepted
+- **Size**: 20x20px (will be scaled automatically)
+- **Naming**: Use descriptive filenames (e.g., `company-name.svg`)
+- **Fallback**: Placeholder.svg provides default styling when logos fail to load
 
-## 📄 License
+## Browser Compatibility
 
-This project is open source and available for modification and commercial use. The TradingView widget is subject to TradingView's terms of service.
-
-## 🤝 Contributing
-
-Contributions are welcome! Areas for improvement:
-- Additional widget themes
-- More customization options
-- Performance optimizations
-- New animation effects
-- Additional financial data sources
-
-## 📈 Roadmap
-
-- [ ] Add light theme option
-- [ ] Implement configurable animation speeds
-- [ ] Add more financial instruments
-- [ ] Create widget configuration interface
-- [ ] Add mobile-responsive optimizations
-- [ ] Implement widget state management
-
----
-
-**Built for financial platforms and trading websites** 🚀 
+Both widgets are compatible with:
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- eCamm Live's widget system
+- Mobile devices (responsive design)
+- Screen readers and assistive technologies 

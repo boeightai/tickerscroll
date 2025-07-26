@@ -15,13 +15,13 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif;
             background: #131722;
             overflow: hidden;
-            height: 36px;
             margin: 0;
             padding: 0;
+            height: 36px;
         }
 
         .sponsor-widget-container {
-            width: 1280px;
+            width: 100%;
             height: 36px;
             background: #131722;
             position: relative;
@@ -30,22 +30,16 @@
             border-bottom: 1px solid #2a2e39;
         }
 
-        .sponsor-ticker-tape {
-            display: flex;
-            align-items: center;
-            height: 100%;
-            animation: scroll-left 30s linear infinite;
-            white-space: nowrap;
-        }
-
         .sponsor-item {
             display: inline-flex;
             align-items: center;
             padding: 0 12px;
             height: 100%;
             border-right: 1px solid #2a2e39;
-            min-width: 220px;
+            min-width: 200px;
+            max-width: 280px;
             position: relative;
+            flex-shrink: 0;
         }
 
         .sponsor-logo {
@@ -60,6 +54,28 @@
             font-size: 11px;
             color: white;
             flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .sponsor-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 3px;
+            display: block;
+        }
+
+        .sponsor-logo.fallback::after {
+            content: "LOGO";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8px;
+            font-weight: bold;
+            color: white;
+            z-index: 1;
         }
 
         .sponsor-info {
@@ -98,11 +114,26 @@
 
         @keyframes scroll-left {
             0% {
-                transform: translateX(100%);
+                transform: translateX(0);
             }
             100% {
-                transform: translateX(-100%);
+                transform: translateX(-50%);
             }
+        }
+
+        /* Pause animation initially */
+        .sponsor-ticker-tape {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            white-space: nowrap;
+            will-change: transform;
+            animation: none;
+            transform: translateX(0);
+        }
+
+        .sponsor-ticker-tape.animate {
+            animation: scroll-left 30s linear infinite;
         }
 
         @keyframes pulse-text {
@@ -117,6 +148,7 @@
         /* Hover effect for interactivity */
         .sponsor-item:hover {
             background: rgba(41, 98, 255, 0.1);
+            cursor: pointer;
         }
 
         /* Copyright-style attribution */
@@ -128,69 +160,274 @@
             color: #787b86;
             opacity: 0.6;
         }
+
+        /* Responsive adjustments for different screen sizes */
+        @media (max-width: 768px) {
+            .sponsor-item {
+                min-width: 160px;
+                padding: 0 8px;
+            }
+            
+            .sponsor-title {
+                font-size: 10px;
+            }
+            
+            .sponsor-subtitle {
+                font-size: 9px;
+            }
+        }
+
+        /* Ensure widget works in eCamm Live's iframe environment */
+        html, body {
+            overflow: hidden !important;
+        }
+
+        /* For eCamm Live widget compatibility - allow the widget to be resized */
+        @media (min-width: 769px) {
+            .sponsor-widget-container {
+                width: 1280px;
+            }
+        }
+
+        /* Ensure proper overflow handling */
+        .sponsor-widget-container {
+            overflow: hidden;
+        }
+
+        /* Focus styles for accessibility */
+        .sponsor-item:focus {
+            outline: 2px solid #2962ff;
+            outline-offset: -2px;
+        }
     </style>
+    <script>
+        // Enhanced image loading and error handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.sponsor-logo img');
+            
+            images.forEach(function(img) {
+                const logoContainer = img.parentElement;
+                
+                // Add loading state
+                img.addEventListener('load', function() {
+                    logoContainer.classList.remove('fallback');
+                });
+                
+                // Enhanced error handling
+                img.addEventListener('error', function() {
+                    this.style.display = 'none';
+                    logoContainer.classList.add('fallback');
+                    console.warn('Failed to load sponsor logo:', this.src);
+                });
+                
+                // Add accessibility attributes
+                img.setAttribute('alt', 'Sponsor Logo');
+                img.setAttribute('loading', 'lazy');
+            });
+            
+            // Ensure the ticker starts from the left edge and animates properly
+            const tickerTape = document.querySelector('.sponsor-ticker-tape');
+            if (tickerTape) {
+                // Reset any existing transforms
+                tickerTape.style.transform = 'translateX(0)';
+                
+                // Force a reflow to ensure the initial state is applied
+                tickerTape.offsetHeight;
+                
+                // Start the animation after a short delay
+                setTimeout(() => {
+                    tickerTape.classList.add('animate');
+                    console.log('Sponsor ticker animation started');
+                }, 500);
+            }
+            
+            // Add click handlers for interactivity
+            const sponsorItems = document.querySelectorAll('.sponsor-item');
+            sponsorItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    // Extract email from subtitle
+                    const subtitle = this.querySelector('.sponsor-subtitle');
+                    if (subtitle && subtitle.textContent.includes('@')) {
+                        const email = subtitle.textContent.trim();
+                        // Open email client or copy to clipboard
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(email).then(() => {
+                                console.log('Email copied to clipboard:', email);
+                            });
+                        } else {
+                            // Fallback for older browsers
+                            window.open(`mailto:${email}`);
+                        }
+                    }
+                });
+                
+                // Add keyboard accessibility
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('role', 'button');
+                item.setAttribute('aria-label', 'Sponsor opportunity - click to contact');
+            });
+        });
+    </script>
 </head>
 <body>
-    <div class="sponsor-widget-container">
+    <div class="sponsor-widget-container" role="region" aria-label="Sponsor opportunities ticker">
         <div class="sponsor-ticker-tape">
-            <div class="sponsor-item call-to-action">
-                <div class="sponsor-logo">🚀</div>
+            <!-- First set of items -->
+            <div class="sponsor-item call-to-action" tabindex="0" role="button" aria-label="Seeking sponsors - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
                 <div class="sponsor-info">
                     <div class="sponsor-title">SEEKING SPONSORS</div>
                     <div class="sponsor-subtitle">sponsors@bonam.com</div>
                 </div>
             </div>
             
-            <div class="sponsor-item">
-                <div class="sponsor-logo">💼</div>
+            <div class="sponsor-item" tabindex="0" role="button" aria-label="Your logo here - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
                 <div class="sponsor-info">
                     <div class="sponsor-title">YOUR LOGO HERE</div>
                     <div class="sponsor-subtitle">sponsors@bonam.com</div>
                 </div>
             </div>
             
-            <div class="sponsor-item urgent">
-                <div class="sponsor-logo">📈</div>
+            <div class="sponsor-item urgent" tabindex="0" role="button" aria-label="Sponsor opportunity - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
                 <div class="sponsor-info">
                     <div class="sponsor-title">SPONSOR OPPORTUNITY</div>
                     <div class="sponsor-subtitle">sponsors@bonam.com</div>
                 </div>
             </div>
             
-            <div class="sponsor-item contact">
-                <div class="sponsor-logo">📧</div>
+            <div class="sponsor-item contact" tabindex="0" role="button" aria-label="Get in touch - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
                 <div class="sponsor-info">
                     <div class="sponsor-title">GET IN TOUCH</div>
                     <div class="sponsor-subtitle">sponsors@bonam.com</div>
                 </div>
             </div>
             
-            <div class="sponsor-item call-to-action">
-                <div class="sponsor-logo">⭐</div>
+            <div class="sponsor-item call-to-action" tabindex="0" role="button" aria-label="Become a sponsor - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
                 <div class="sponsor-info">
                     <div class="sponsor-title">BECOME A SPONSOR</div>
                     <div class="sponsor-subtitle">sponsors@bonam.com</div>
                 </div>
             </div>
             
-            <div class="sponsor-item">
-                <div class="sponsor-logo">🎯</div>
+            <div class="sponsor-item" tabindex="0" role="button" aria-label="Target audience - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
                 <div class="sponsor-info">
                     <div class="sponsor-title">TARGET AUDIENCE</div>
                     <div class="sponsor-subtitle">sponsors@bonam.com</div>
                 </div>
             </div>
             
-            <div class="sponsor-item">
-                <div class="sponsor-logo">🤝</div>
+            <div class="sponsor-item" tabindex="0" role="button" aria-label="Partnership ready - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
                 <div class="sponsor-info">
                     <div class="sponsor-title">PARTNERSHIP READY</div>
                     <div class="sponsor-subtitle">sponsors@bonam.com</div>
                 </div>
             </div>
             
-            <div class="sponsor-item contact">
-                <div class="sponsor-logo">💬</div>
+            <div class="sponsor-item contact" tabindex="0" role="button" aria-label="Chat with us - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">CHAT WITH US</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <!-- Duplicate set for seamless infinite scroll -->
+            <div class="sponsor-item call-to-action" tabindex="0" role="button" aria-label="Seeking sponsors - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">SEEKING SPONSORS</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item" tabindex="0" role="button" aria-label="Your logo here - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">YOUR LOGO HERE</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item urgent" tabindex="0" role="button" aria-label="Sponsor opportunity - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">SPONSOR OPPORTUNITY</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item contact" tabindex="0" role="button" aria-label="Get in touch - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">GET IN TOUCH</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item call-to-action" tabindex="0" role="button" aria-label="Become a sponsor - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">BECOME A SPONSOR</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item" tabindex="0" role="button" aria-label="Target audience - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">TARGET AUDIENCE</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item" tabindex="0" role="button" aria-label="Partnership ready - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
+                <div class="sponsor-info">
+                    <div class="sponsor-title">PARTNERSHIP READY</div>
+                    <div class="sponsor-subtitle">sponsors@bonam.com</div>
+                </div>
+            </div>
+            
+            <div class="sponsor-item contact" tabindex="0" role="button" aria-label="Chat with us - click to contact">
+                <div class="sponsor-logo fallback">
+                    <img src="sponsor_logos/placeholder.svg" alt="Sponsor Logo" loading="lazy">
+                </div>
                 <div class="sponsor-info">
                     <div class="sponsor-title">CHAT WITH US</div>
                     <div class="sponsor-subtitle">sponsors@bonam.com</div>
